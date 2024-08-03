@@ -1,3 +1,5 @@
+# MOHO SolidJS frontend server
+
 ## Usage
 
 Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
@@ -32,3 +34,40 @@ Your app is ready to be deployed!
 ## Deployment
 
 You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+
+## Docker
+
+Build
+
+```
+docker build -t moho-app .
+```
+
+Run & stop (locally)
+
+```
+# replace 'your-aws-eks-endpoint'
+docker run -p 3000:3000 -e VITE_WEBSOCKET_URL=ws://your-aws-eks-endpoint:8080/ws moho-app
+
+# List running containers
+docker ps
+
+# Stop by container id
+docker stop abc123def456
+```
+
+Initialize Amazon ECR
+
+```
+aws ecr create-repository --repository-name moho-app
+
+# Authenticate Docker to ECR
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 680324637652.dkr.ecr.eu-central-1.amazonaws.com
+```
+
+Push to Amazon ECR
+
+```
+docker tag moho-app:latest 680324637652.dkr.ecr.eu-central-1.amazonaws.com/moho-app:latest
+docker push 680324637652.dkr.ecr.eu-central-1.amazonaws.com/moho-app:latest
+```

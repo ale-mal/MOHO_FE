@@ -1,7 +1,6 @@
 import { createSignal, onCleanup, type Component } from 'solid-js';
 import ChatBox from "./components/ChatBox";
 
-import logo from './logo.svg';
 import styles from './App.module.css';
 
 interface Message {
@@ -15,8 +14,10 @@ const App: Component = () => {
   const [message, setMessage] = createSignal("");
   let ws: WebSocket;
 
+  const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080/ws";
+
   const connectWebSocket = () => {
-    ws = new WebSocket("ws://192.168.1.37:8080/ws");
+    ws = new WebSocket(websocketUrl);
     ws.onmessage = (event) => {
       setMessages([...messages(), JSON.parse(event.data)]);
     };
