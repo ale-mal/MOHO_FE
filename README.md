@@ -79,3 +79,7 @@ Delete Amazon ECR
 aws ecr delete-repository --repository-name moho-fe --force
 aws ecr describe-repositories
 ```
+
+## Useful links
+
+- [Solid Docs](https://docs.solidjs.com/guides/routing-and-navigation) - routing and navigation page

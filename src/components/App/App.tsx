@@ -1,5 +1,5 @@
 import { createSignal, onCleanup, type Component } from 'solid-js';
-import ChatBox from "./components/ChatBox";
+import ChatBox from "../Chat/ChatBox";
 
 import styles from './App.module.css';
 
@@ -14,7 +14,7 @@ const App: Component = () => {
   const [message, setMessage] = createSignal("");
   let ws: WebSocket;
 
-  const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080/ws";
+  const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL;
 
   const connectWebSocket = () => {
     ws = new WebSocket(websocketUrl);
