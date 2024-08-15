@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.14.2",
-    "solid-js": "^1.8.11"
+    "@types/uuid": "^10.0.0",
+    "solid-js": "^1.8.11",
+    "uuid": "^10.0.0"
   }
 }

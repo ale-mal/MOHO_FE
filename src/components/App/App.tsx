@@ -1,5 +1,6 @@
 import { createSignal, onCleanup, type Component } from 'solid-js';
 import ChatBox from "../Chat/ChatBox";
+import {getCID} from "../../utils/utils"
 
 import styles from './App.module.css';
 
@@ -13,6 +14,7 @@ const App: Component = () => {
   const [username, setUsername] = createSignal("");
   const [message, setMessage] = createSignal("");
   let ws: WebSocket;
+  let cid = getCID();
 
   const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL;
 
@@ -36,6 +38,7 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <h1>Real-time Chat</h1>
+      <p>your cid is {cid}</p>
       <input
         type="text"
         placeholder="Username"
