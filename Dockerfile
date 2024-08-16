@@ -21,7 +21,7 @@ EXPOSE 3000
 
 # Define environment variable
 ENV NODE_ENV=production
-ENV WEBSOCKET_URL=ws://localhost:8080/ws
+ENV WEBSOCKET_URL=ws://localhost:8080
 
 # Start the application
 CMD ["npm", "start"]

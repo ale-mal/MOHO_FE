@@ -20,7 +20,7 @@ In the project directory, you can run:
 
 To set the websocket backend url:
 
-`VITE_WEBSOCKET_URL=ws://your-aws-eks-endpoint:8080/ws npm run dev`
+`VITE_WEBSOCKET_URL=ws://your-aws-eks-endpoint:8080 npm run dev`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -49,7 +49,7 @@ Run & stop (locally)
 
 ```
 # replace 'your-aws-eks-endpoint'
-docker run -p 3000:3000 -e VITE_WEBSOCKET_URL=ws://your-aws-eks-endpoint:8080/ws moho-fe
+docker run -p 3000:3000 -e VITE_WEBSOCKET_URL=ws://your-aws-eks-endpoint:8080 moho-fe
 
 # List running containers
 docker ps

@@ -1,4 +1,4 @@
-import MessageItem from "./MessageItem";
+import MessageItem from "~/components/Chat/MessageItem";
 
 interface ChatBoxProps {
     messages: { username: string; message: string }[];
