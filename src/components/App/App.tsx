@@ -1,19 +1,29 @@
-import { type Component } from 'solid-js';
-import Chat from "~/components/Chat/Chat";
+import { type Component, createSignal, Show } from 'solid-js';
 import FindButton from "~/components/Find/FindButton";
-import {getCID} from "~/utils/utils"
+import { getCID } from "~/utils/utils";
+import { searching } from "~/find/find_state";
 
 import styles from './App.module.css';
 
 const App: Component = () => {
-  let cid = getCID();
+  const cid = getCID();
+  const [username, setUsername] = createSignal("");
 
   return (
     <div class={styles.App}>
-      <h1>Real-time Chat</h1>
+      <h1>Find a Game</h1>
       <p>your cid is {cid}</p>
-      <FindButton />
-      <Chat />
+      <input
+        type="text"
+        placeholder="Username"
+        value={username()}
+        disabled={searching()}
+        onInput={(e) => setUsername(e.currentTarget.value)}
+      />
+      <Show when={searching()}>
+        <p>Searching for a game...</p>
+      </Show>
+      <FindButton username={username()} />
     </div>
   );
 };

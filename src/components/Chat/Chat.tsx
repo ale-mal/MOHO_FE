@@ -1,28 +1,40 @@
 import { createSignal, onCleanup, type Component } from "solid-js";
 import ChatBox from "~/components/Chat/ChatBox";
+import { getCID } from "~/utils/utils";
 
 interface Message {
   username: string;
   message: string;
 }
 
-const Chat: Component = () => {
+interface ChatProps {
+  sessionId: string;
+  username: string;
+}
+
+const Chat: Component<ChatProps> = (props) => {
   const [messages, setMessages] = createSignal<Message[]>([]);
-  const [username, setUsername] = createSignal("");
   const [message, setMessage] = createSignal("");
+  const cid = getCID();
   let ws: WebSocket;
 
   const connectWebSocket = () => {
-    ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL + "/chat");
+    ws = new WebSocket(
+      import.meta.env.VITE_WEBSOCKET_URL +
+        "/game-ws?sessionId=" +
+        props.sessionId +
+        "&cid=" +
+        cid
+    );
     ws.onmessage = (event) => {
-      setMessages([...messages(), JSON.parse(event.data)]);
+      setMessages((prev) => [...prev, JSON.parse(event.data)]);
     };
     onCleanup(() => ws.close());
   };
 
   const sendMessage = () => {
-    if (ws && message() && username()) {
-      ws.send(JSON.stringify({ username: username(), message: message() }));
+    if (ws && ws.readyState === ws.OPEN && message()) {
+      ws.send(JSON.stringify({ username: props.username, message: message() }));
       setMessage("");
     }
   };
@@ -31,12 +43,6 @@ const Chat: Component = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username()}
-        onInput={(e) => setUsername(e.currentTarget.value)}
-      />
       <ChatBox messages={messages()} />
       <input
         type="text"
@@ -48,6 +54,6 @@ const Chat: Component = () => {
       <button onClick={sendMessage}>Send</button>
     </div>
   );
-}
+};
 
 export default Chat;

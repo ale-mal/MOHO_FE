@@ -1,11 +1,18 @@
-import {getCID} from "../utils/utils"
+import { Show } from "solid-js";
+import { useSearchParams } from "@solidjs/router";
+import { username } from "~/find/find_state";
+import Chat from "~/components/Chat/Chat";
 
 export default function Game() {
-  let cid = getCID();
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.sessionId;
+
   return (
-    <div>
-      <p>Game</p>
-      <p>your cid is {cid}</p>
-    </div>
+    <Show
+      when={sessionId && username()}
+      fallback={<p>No active game session. Please find a game from the home page.</p>}
+    >
+      <Chat sessionId={sessionId!} username={username()} />
+    </Show>
   );
 }

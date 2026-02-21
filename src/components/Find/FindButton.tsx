@@ -1,19 +1,32 @@
-import {type Component} from "solid-js";
-import {searching, setSearching} from "~/find/find_state";
-import {getCID} from "~/utils/utils"
+import { type Component } from "solid-js";
+import { useNavigate } from "@solidjs/router";
+import { searching, setSearching, setUsername } from "~/find/find_state";
+import { getCID } from "~/utils/utils";
 
-const FindButton: Component = () => {
+interface FindButtonProps {
+  username: string;
+}
+
+const FindButton: Component<FindButtonProps> = (props) => {
   let ws: WebSocket;
   let heartbeatInterval: number;
-  let cid = getCID();
+  const cid = getCID();
+  const navigate = useNavigate();
 
   const connectWebSocket = () => {
-    let wsUrl = import.meta.env.VITE_WEBSOCKET_URL + "/find?cid=" + cid;
+    const wsUrl =
+      import.meta.env.VITE_WEBSOCKET_URL +
+      "/find?cid=" +
+      cid +
+      "&username=" +
+      encodeURIComponent(props.username);
     ws = new WebSocket(wsUrl);
     ws.onmessage = (event) => {
-      if (event.data === "found") {
-        setSearching(false);
+      if (event.data.startsWith("found:")) {
+        const sessionId = event.data.slice("found:".length);
+        setUsername(props.username);
         ws.close();
+        navigate("/game?sessionId=" + sessionId);
       }
     };
     ws.onclose = () => {
@@ -25,20 +38,19 @@ const FindButton: Component = () => {
     if (ws && ws.readyState === ws.OPEN) {
       ws.send("");
     }
-  }
+  };
 
   const findGame = () => {
     if (!searching()) {
       setSearching(true);
       connectWebSocket();
-
       heartbeatInterval = window.setInterval(sendHeartbeat, 1000);
     }
   };
 
   return (
-    <button onClick={findGame}>
-      {searching() ? 'Searching' : 'Find'}
+    <button onClick={findGame} disabled={searching() || props.username.trim() === ""}>
+      {searching() ? "Searching..." : "Find Game"}
     </button>
   );
 };
