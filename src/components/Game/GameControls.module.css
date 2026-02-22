@@ -1,0 +1,79 @@
+/* Hidden on desktop (mouse/trackpad) */
+.controls {
+  display: none;
+}
+
+/* Shown on touch devices — phone portrait / narrow landscape */
+@media (pointer: coarse) {
+  .controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.3);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .dpad {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.08s;
+  }
+
+  .btn:active,
+  .btnActive {
+    background: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Tablet landscape — controls on the right side */
+@media (pointer: coarse) and (min-width: 768px) and (orientation: landscape) {
+  .controls {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    width: auto;
+    min-width: 120px;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .dpad {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    order: 2;
+  }
+
+  .jumpBtn {
+    order: 1;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    width: 72px;
+    height: 72px;
+  }
+}
